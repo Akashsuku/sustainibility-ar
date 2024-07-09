@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAR Video Player</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #video-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        #video {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <a-scene embedded arjs>
+        <a-marker preset="custom" type="pattern" url="pattern-logo.patt">
+            <a-entity id="video-entity" geometry="primitive: plane; height: 1; width: 1" position="0 0 0" material="src: #video; opacity: 0;"></a-entity>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <div id="video-container">
+        <video id="video" src="video.mp4" controls></video>
+    </div>
+
+    <script>
+        document.querySelector('a-marker').addEventListener('markerFound', function() {
+            const videoContainer = document.getElementById('video-container');
+            const video = document.getElementById('video');
+            videoContainer.style.opacity = 1;
+            video.load();
+        });
+
+        document.querySelector('a-marker').addEventListener('markerLost', function() {
+            const videoContainer = document.getElementById('video-container');
+            const video = document.getElementById('video');
+            videoContainer.style.opacity = 0;
+            video.pause();
+        });
+    </script>
+</body>
+</html>
