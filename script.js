@@ -1,15 +1,19 @@
 window.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded and parsed');
+    
     const video = document.getElementById('video');
     const videoPlayer = document.getElementById('video-player');
     const marker = document.getElementById('marker');
 
     marker.addEventListener('markerFound', () => {
+        console.log('Marker found');
         video.style.display = 'block';
         video.play();
         fadeInVideo();
     });
 
     marker.addEventListener('markerLost', () => {
+        console.log('Marker lost');
         video.pause();
         video.style.display = 'none';
         videoPlayer.setAttribute('material', 'opacity', 0.0);
@@ -27,6 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     video.addEventListener('play', () => {
+        console.log('Video play event');
         const texture = new THREE.VideoTexture(video);
         videoPlayer.setAttribute('material', 'src', texture);
     });
